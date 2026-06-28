@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "brainstorming": {
+      "source": "CloudCannon/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/brainstorming/SKILL.md",
+      "computedHash": "71f6caa46a86e74570574855edea0ab20b8949a3c585f0ad1b889308ad1e930d"
+    },
+    "cloudcannon-configuration": {
+      "source": "CloudCannon/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudcannon-configuration/SKILL.md",
+      "computedHash": "f7ee09933993bcd15a39909cb9cf7ab3f7f44732248b231a03c26d1de439abdb"
+    },
+    "cloudcannon-snippets": {
+      "source": "CloudCannon/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudcannon-snippets/SKILL.md",
+      "computedHash": "48b48a1a1866ebe7d840b28d1a5636e8d6f14868dc8103e9aed4136771c55e1a"
+    },
+    "cloudcannon-visual-editing": {
+      "source": "CloudCannon/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudcannon-visual-editing/SKILL.md",
+      "computedHash": "776a392c43bbdd6e37a0c9f659c603ca877d1754614da16a7f7cb6045d59ebf1"
+    },
+    "migrating-to-cloudcannon": {
+      "source": "CloudCannon/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/migrating-to-cloudcannon/SKILL.md",
+      "computedHash": "21c73d6c7577a1350f7bff30cc02e8e52503ea9e2565ab0fc17086baf86f8a42"
+    }
+  }
+}
