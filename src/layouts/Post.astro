@@ -2,7 +2,7 @@
 import Layout from "./Layout.astro";
 import PostSummary from "../components/blog/summary.astro";
 import PostHero from "../components/blog/post-hero/post-hero.astro";
-import { getCollection } from "astro:content";
+import { getPublishedPosts } from "../utils/posts";
 
 type Props = {
   frontmatter: {
@@ -21,7 +21,7 @@ type Props = {
 
 const { frontmatter, body } = Astro.props;
 
-const posts = await getCollection("blog");
+const posts = await getPublishedPosts();
 const filteredPosts = posts.filter(
   (post) => post.data.title !== frontmatter.title,
 );

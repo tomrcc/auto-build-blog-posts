@@ -1,0 +1,29 @@
+---
+_schema: default
+title: Because of the Internet
+post_hero:
+  heading: Because of the Internet
+  date: 2026-10-22T10:00:00+00:00
+  tags:
+    - scheduling
+  author: T Richardson
+  image: /src/assets/images/blog/featured-image-6.jpg
+  image_alt: A person typing on a laptop at a wooden desk.
+thumb_image_path: /src/assets/images/blog/blog-thumb-6.jpg
+thumb_image_alt: A person typing on a laptop at a wooden desk.
+seo:
+  page_description: >-
+    A scheduled blog post — dated in the future, so it stays out of the build
+    until a build runs on or after its publish date.
+  canonical_url:
+  featured_image: /images/blog/featured-image-6.jpg
+  featured_image_alt: A person typing on a laptop at a wooden desk.
+  author_twitter_handle:
+  open_graph_type: article
+  no_index: false
+---
+This post has a `post_hero.date` set in the future. Until a build runs on or after that date, it is excluded from the build entirely — it has no page, and it does not appear in the blog index, tag pages, the RSS feed, or any "Recent Posts" list.
+
+When the date is in the future, `scripts/generate-schedule.mjs` adds a line for this post to `_schedule.txt` in the build output. CloudCannon reads that file and schedules a build at the timestamp. Once that build runs, the date has passed, the publish gate in `src/utils/posts.ts` lets the post through, and it goes live — no manual step required.
+
+Change the date to the past and rebuild to see it appear immediately.

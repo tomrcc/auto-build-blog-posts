@@ -3,20 +3,17 @@ import type { Page } from "astro";
 import BlogList from "../../components/blog/list.astro";
 import BlogPagination from "../../components/blog/pagination";
 import Layout from "../../layouts/Paginated.astro";
-import { getCollection, getEntry, type CollectionEntry } from "astro:content";
+import { getEntry, type CollectionEntry } from "astro:content";
+import { getPublishedPosts } from "../../utils/posts";
 
 type Props = {
   page: Page<CollectionEntry<"blog">>;
 };
 
 export async function getStaticPaths({ paginate }: { paginate: Function }) {
-  const posts = await getCollection("blog");
+  // Published posts only, already sorted newest-first.
+  const posts = await getPublishedPosts();
   const page = await getEntry("pages", "blog");
-  posts.sort((a, b) => {
-    const aDate = new Date(a.data.post_hero.date);
-    const bDate = new Date(b.data.post_hero.date);
-    return bDate - aDate;
-  });
   if (!page) return;
   return paginate(posts, {
     pageSize: "page_size" in page.data ? page.data.page_size : 6,

@@ -1,1 +1,2 @@
 npx -y pagefind --site dist
+node scripts/generate-schedule.mjs dist/_schedule.txt

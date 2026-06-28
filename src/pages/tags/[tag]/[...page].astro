@@ -2,12 +2,13 @@
 import BlogList from "../../../components/blog/list.astro";
 import BlogPagination from "../../../components/blog/pagination";
 import Layout from "../../../layouts/Layout.astro";
-import { getCollection, getEntry } from "astro:content";
+import { getEntry } from "astro:content";
+import { getPublishedPosts } from "../../../utils/posts";
 
 export async function getStaticPaths({ paginate }: { paginate: Function }) {
   const tags: Record<string, any> = {};
   const page = await getEntry("pages", "blog");
-  const posts = await getCollection("blog");
+  const posts = await getPublishedPosts();
 
   if (!page) return;
 

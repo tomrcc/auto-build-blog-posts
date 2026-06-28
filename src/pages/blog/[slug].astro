@@ -1,9 +1,11 @@
 ---
 import PostLayout from "../../layouts/Post.astro";
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
+import { getPublishedPosts } from "../../utils/posts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  // Only published posts get a route — a future-dated post 404s until its build.
+  const posts = await getPublishedPosts();
   return posts.map((post) => ({ params: { slug: post.id } }));
 }
 
