@@ -1,3 +1,2 @@
-2026-10-22T10:00:00+00:00,Publish Post,_posts/2026-10-22-because-of-the-internet.md
-2026-11-22T10:00:00+00:00,Publish Post,_posts/2026-11-22-the-history-of-marketing.md
 2027-11-22T10:00:00+00:00,Publish Post,_posts/2026-11-22-the-history-of-marketing.md
+2026-06-28T04:32:28+00:00,Publish Post,_posts/2026-11-22-the-history-of-marketing.md
