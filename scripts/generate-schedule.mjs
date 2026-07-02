@@ -1,18 +1,23 @@
 /**
  * Generates `_schedule.txt` from blog post dates.
  *
- * Any post whose `post_hero.date` is in the future is excluded from the build
- * (see src/utils/posts.ts) and gets a line in the schedule file. CloudCannon
- * reads `_schedule.txt` from the build output root and triggers a fresh build
- * at each timestamp, at which point that post's date has passed and it goes
- * live automatically.
+ * A post is only in the build while `post_hero.date <= now < unpublish_date`
+ * (see src/utils/posts.ts). This script lists every future boundary of that
+ * window so CloudCannon can trigger a build when the state changes:
+ *   - a future `post_hero.date`          → the post goes live (Publish Post)
+ *   - a future `post_hero.unpublish_date` → the post drops off (Unpublish Post)
+ *
+ * CloudCannon reads `_schedule.txt` from the build output root and triggers a
+ * fresh build at each timestamp, at which point that boundary has passed and
+ * the publish gate reflects the new state automatically. A single post can
+ * contribute both a publish and an unpublish line.
  *
  * Runs from the `.cloudcannon/postbuild` hook, writing straight into the build
  * output (`dist/`) — the same way the pagefind step in that hook operates on
  * `dist`. Override the destination with the first CLI argument.
  *
  * Line format (one scheduled build per line):
- *   <ISO 8601 timestamp>,Publish Post,<source path>
+ *   <ISO 8601 timestamp>,<Publish Post|Unpublish Post>,<source path>
  */
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
@@ -44,19 +49,24 @@ const files = (await readdir(BLOG_DIR)).filter((f) => /\.(md|mdx)$/.test(f));
 for (const file of files) {
   const fullPath = join(BLOG_DIR, file);
   const data = parseFrontmatter(await readFile(fullPath, "utf8"));
-  const rawDate = data?.post_hero?.date;
-  if (!rawDate) continue;
+  const sourcePath = relative(ROOT, fullPath);
 
-  const date = new Date(rawDate);
-  if (Number.isNaN(date.getTime())) {
-    console.warn(`[schedule] skipping ${file}: unparseable date "${rawDate}"`);
-    continue;
-  }
+  // Emit a scheduled build for each future boundary of the post's publish
+  // window: its publish date and, if set, its unpublish date.
+  const schedule = (raw, label) => {
+    if (!raw) return;
+    const date = new Date(raw);
+    if (Number.isNaN(date.getTime())) {
+      console.warn(`[schedule] skipping ${file}: unparseable date "${raw}"`);
+      return;
+    }
+    if (date.getTime() > now) {
+      entries.push({ date, line: `${toScheduleTimestamp(date)},${label},${sourcePath}` });
+    }
+  };
 
-  if (date.getTime() > now) {
-    const sourcePath = relative(ROOT, fullPath);
-    entries.push({ date, line: `${toScheduleTimestamp(date)},Publish Post,${sourcePath}` });
-  }
+  schedule(data?.post_hero?.date, "Publish Post");
+  schedule(data?.post_hero?.unpublish_date, "Unpublish Post");
 }
 
 entries.sort((a, b) => a.date - b.date);
@@ -65,5 +75,5 @@ await mkdir(dirname(OUTPUT), { recursive: true });
 await writeFile(OUTPUT, contents ? `${contents}\n` : "");
 
 console.log(
-  `[schedule] ${entries.length} scheduled post(s) written to ${relative(ROOT, OUTPUT)}`,
+  `[schedule] ${entries.length} scheduled build(s) written to ${relative(ROOT, OUTPUT)}`,
 );

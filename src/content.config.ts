@@ -20,6 +20,7 @@ const blogCollection = defineCollection({
     title: z.string(),
     post_hero: z.object({
       date: z.string().or(z.date()),
+      unpublish_date: z.string().or(z.date()).optional().nullable(),
       heading: z.string(),
       tags: z.array(z.string()),
       author: z.string(),

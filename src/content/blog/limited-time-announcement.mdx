@@ -1,0 +1,30 @@
+---
+_schema: default
+title: Limited-Time Announcement
+post_hero:
+  heading: Limited-Time Announcement
+  date: 2026-06-15T10:00:00+00:00
+  unpublish_date: 2026-12-01T10:00:00+00:00
+  tags:
+    - building
+  author: T Richardson
+  image: /src/assets/images/blog/featured-image-1.jpg
+  image_alt: A desk with a calendar and a laptop.
+thumb_image_path: /src/assets/images/blog/blog-thumb-1.jpg
+thumb_image_alt: A desk with a calendar and a laptop.
+seo:
+  page_description: >-
+    A post with an unpublish date — it is live now, and a scheduled build
+    removes it from the site once its unpublish date passes.
+  canonical_url:
+  featured_image: /images/blog/featured-image-1.jpg
+  featured_image_alt: A desk with a calendar and a laptop.
+  author_twitter_handle:
+  open_graph_type: article
+  no_index: false
+---
+This post has both a `post_hero.date` (in the past) and a `post_hero.unpublish_date` (in the future). It is inside its publish window, so it is live right now — it has a page and appears in the blog index, tag pages, the RSS feed, and "Recent Posts" lists.
+
+A post is only included in the build while `date <= now < unpublish_date`. Because the unpublish date is still ahead, `scripts/generate-schedule.mjs` adds an `Unpublish Post` line for it to `_schedule.txt` in the build output. CloudCannon reads that file and schedules a build at the timestamp. Once that build runs, the unpublish date has passed, the publish gate in `src/utils/posts.ts` excludes the post, and it drops off the site entirely — no manual step required.
+
+Leave the unpublish date empty to keep a post published indefinitely. Change it to the past and rebuild to see this post disappear immediately.

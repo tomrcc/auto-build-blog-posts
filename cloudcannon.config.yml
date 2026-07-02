@@ -347,6 +347,10 @@ _inputs:
     hidden: true
   date:
     instance_value: NOW
+  unpublish_date:
+    type: datetime
+    label: Unpublish date
+    comment: Optional. The post is removed from the site at this time. Leave empty to keep it published indefinitely.
   page_size:
     type: number
     comment: The number of collection items to list per page.
