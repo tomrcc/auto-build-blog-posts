@@ -4,7 +4,7 @@ A demo Astro site showing how to **schedule blog posts to publish in the future*
 
 Give a post a future date and it stays out of the build — no page, no listing, nothing in the feed — until a build runs on or after that date, at which point it goes live automatically. CloudCannon handles the timing by reading a generated `_schedule.txt` and triggering a rebuild at each scheduled moment.
 
-See a [demo site](https://tiny-jackal.cloudvent.net/).
+See a [demo site](https://tranquil-artichoke.cloudvent.net/).
 
 ## How it works
 
